@@ -1,0 +1,59 @@
+---
+title: "SLiCell introduction"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{SLiCell introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(SLiCell)
+```
+```{r}
+# loading gene knockdown experimental data sets
+data("sens_Achilles_AC")
+data("sens_Achilles_Demeter")
+data("sens_Drive_Ataris")
+data("sens_Drive_RSA")
+```
+
+```{r}
+# loading information about geneA mutations in cancer cell lines
+data("gene_cl_mut_matrix")
+```
+
+```{r}
+# loading exemplary list of geneA geneB pairs to vreify SL potential
+data("exemp_SL_pairs")
+
+```
+```{r}
+# test first pair with Wilcoxon rank sum test
+run_wilcoxon_sl_pair(exemp_SL_pairs[1,], sens_matrix1 = sens_Achilles_AC, alt_matrix1=gene_cl_mut_matrix, plot=T)
+```
+
+```{r}
+# perform Wilcoxon rank sum test for first ten pairs and all experimental data sets
+# printed warning means that for some data sets geneA or geneB were not present and could not be tested
+verify_sl_pairs(exemp_SL_pairs[1:10,])
+```
+
+```{r}
+# test first pair with Wilcoxon rank sum test with enrichment analysis
+
+fgsea_ES_and_pval(exemp_SL_pairs[1,], sens_matrix1 = sens_Achilles_AC, alt_matrix1=gene_cl_mut_matrix, plot=T)
+```
+
+```{r}
+# perform enrichment analysis for first ten pairs and all experimental data sets
+# printed warning means that for some data sets geneA or geneB were not present and could not be tested
+verify_enrichment(exemp_SL_pairs[1:10,])
+```
